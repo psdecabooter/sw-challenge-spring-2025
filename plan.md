@@ -48,3 +48,11 @@ https://stackoverflow.com/questions/36075197/how-to-modify-datetime-datetime-hou
 00:11
 ok I am ready to work on the backend
 https://www.geeksforgeeks.org/how-to-import-a-class-from-another-file-in-python/
+csv time
+https://docs.python.org/3/library/csv.html
+
+00:22
+https://www.geeksforgeeks.org/python-list-files-in-a-directory/
+
+00:56
+I got my find files method to work, now I have it narrowed to the days

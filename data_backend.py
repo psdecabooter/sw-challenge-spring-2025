@@ -111,6 +111,7 @@ class data_backend:
 
 
 backend = data_backend()
-backend.clean_data("./data/",backend.find_files("./data/", datetime(year=2024,month=9,day=16),datetime(year=2024,month=9,day=17)))
-
+file_names = backend.find_files("./data/", datetime(year=2024,month=9,day=16),datetime(year=2024,month=9,day=17))
+backend.clean_data("./data/",file_names)
+print(file_names[0])
 

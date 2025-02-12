@@ -56,3 +56,13 @@ https://www.geeksforgeeks.org/python-list-files-in-a-directory/
 
 00:56
 I got my find files method to work, now I have it narrowed to the days
+time to work on data cleaning
+
+01:22
+https://www.geeksforgeeks.org/multithreading-python-set-1/
+
+01:28
+so I am reading the files well
+
+01:49
+I need to use a time type, im at 3 hours. Need to speed up

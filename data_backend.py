@@ -193,7 +193,7 @@ class data_backend:
                     if (curr_OHLCV[4] == None): 
                         curr_OHLCV[4] = 1
                     else:
-                        curr_OHLCV += 1
+                        curr_OHLCV[4] += 1
 
     # start_time and end_time are both datetime objects
     # FILE Naming FORMAT:

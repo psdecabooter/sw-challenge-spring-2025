@@ -190,11 +190,6 @@ class data_backend:
                     else:
                         curr_OHLCV += 1
 
-
-
-
-
-
     # start_time and end_time are both datetime objects
     # FILE Naming FORMAT:
     # ctg_tick_XXXX(year)XX(month)XX(date)_XXXX(increases)_XXXXXXXX(8 digit hash)
@@ -227,7 +222,8 @@ class data_backend:
 
 
 backend = data_backend()
-file_names = backend.find_files("./data/", datetime(year=2024,month=9,day=16),datetime(year=2024,month=9,day=17))
-backend.clean_data("./data/",file_names)
-print(file_names[0])
+file_names = backend.find_files("./data/", datetime(year=2024,month=9,day=16),datetime(year=2024,month=9,day=20))
+OHLCV_results = backend.collect_data("./data/", file_names, datetime(year=2024,month=9,day=16), datetime(year=2024,month=9,day=20), timedelta(days=1))
+for result in OHLCV_results:
+    print(result)
 

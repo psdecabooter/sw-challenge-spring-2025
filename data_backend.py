@@ -171,10 +171,6 @@ class data_backend:
             # so now we know we are in a valid file
             # we need to check every line before we move on
             for row in reader:
-                print(file_names[0])
-                print(file_names[len(file_names)-1])
-                print(file_names[curr_file])
-                print(row)
                 # the time of the current row
                 row_time = datetime.strptime(row[0], datetime_format)
                 #the time of the end of the interval
@@ -186,13 +182,6 @@ class data_backend:
                 # also serves as our termination
                 while row_time > end_of_interval:
                     OHLCV_vals.append(curr_OHLCV)
-                    print(curr_time)
-                    print(row_time-end_of_interval)
-                    print(start_time)
-                    print(end_time)
-                    print(interval)
-                    print(curr_OHLCV)
-                    return
                     curr_OHLCV = [None,None,None,None,None]
                     curr_time += interval
                     end_of_interval = max(end_time,curr_time+interval)
@@ -203,10 +192,13 @@ class data_backend:
 
                 # now if it gets here then the time is within the interval
                 # the output looks like timestamp, open, high, low, close, volume
-                if (curr_OHLCV[0] == None): curr_OHLCV[0] = curr_time
+                # make sure that even non-cleaned data goes through for values
+                if row[1] == '': continue
+                if float(row[1]) < 100: continue
+                if (curr_OHLCV[0] == None): curr_OHLCV[0] = curr_time.strftime(datetime_format)
                 if (curr_OHLCV[1] == None): curr_OHLCV[1] = row[1]
-                if (curr_OHLCV[2] == None or curr_OHLCV[2] < row[1]): curr_OHLCV[2] = row[1]
-                if (curr_OHLCV[3] == None or curr_OHLCV[3] > row[1]): curr_OHLCV[3] = row[1]
+                if (curr_OHLCV[2] == None or float(curr_OHLCV[2]) < float(row[1])): curr_OHLCV[2] = row[1]
+                if (curr_OHLCV[3] == None or float(curr_OHLCV[3]) > float(row[1])): curr_OHLCV[3] = row[1]
                 if (curr_OHLCV[4] == None): 
                     curr_OHLCV[4] = 1
                 else:

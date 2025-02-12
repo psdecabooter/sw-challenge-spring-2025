@@ -239,10 +239,3 @@ class data_backend:
         return filtered_files
 
 
-backend = data_backend()
-file_names = backend.find_files("./data/", datetime(year=2024,month=9,day=16),datetime(year=2024,month=9,day=20))
-OHLCV_results = backend.collect_data("./data/", file_names, datetime(year=2024,month=9,day=16), datetime(year=2024,month=9,day=20), timedelta(days=1))
-print("done")
-for result in OHLCV_results:
-    print(result)
-

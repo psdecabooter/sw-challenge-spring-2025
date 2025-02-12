@@ -92,3 +92,18 @@ sucks
 
 04:05
 nvm I did it
+
+04:13
+time to do the frontend
+
+04:27
+testing with this input
+
+2024-09-17 00:09:20.000
+2024-09-18 01:00:00.000
+30m
+
+2024-09-17 00:09:20.000
+2024-09-20 01:00:00.000
+4s20m4h1d
+output.csv

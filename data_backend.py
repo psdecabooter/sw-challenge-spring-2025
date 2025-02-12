@@ -35,7 +35,7 @@ class data_backend:
     def clean_data(self, directory, file_names):
         threads = [threading.Thread(target=self.clean_data_helper, args=(directory,file_name)) for file_name in file_names]
         for file_name in file_names:
-            clean_data_helper(directory, file_name)
+            self.clean_data_helper(directory, file_name)
         #for i in range(len(threads), 50):
         #    for g in range(50):
         #        threads[i+g].start()

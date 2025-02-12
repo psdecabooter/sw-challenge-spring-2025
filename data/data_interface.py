@@ -23,7 +23,11 @@ from datetime import datetime
 #Use the time interval as steps
 class data_interface:
 
-    # datetime ovbject holding our interval
+    # datetime objects holding start and end times
+    start_time = None
+    end_time = None
+
+    # interval_t ovbject holding our interval
     interval = None
 
     # structured data for holding the interval
@@ -38,6 +42,7 @@ class data_interface:
             self.hour = hour
             self.day = day
 
+        # used for debugging
         def to_string(self):
             return f"{self.second}s{self.minute}m{self.hour}h{self.day}d"
 
@@ -47,8 +52,13 @@ class data_interface:
     def __init__(self):
         pass
 
+    # This method will add our time frame
+    # Our date-time objects look like This
+    # 2024-09-16 18:10:13.077
     def add_time_frame(self, start_time, end_time):
-        pass
+        datetime_format = "%Y-%m-%d %H:%M:%S.%f"
+        self.start_time = datetime.strptime(start_time, datetime_format)
+        self.end_time = datetime.strptime(end_time, datetime_format)
 
     #This function handles the input of start time strings
     #Accept time intervals as strings (e.g., “4s”, "15m", "2h", "1d", "1h30m")
@@ -82,8 +92,9 @@ class data_interface:
                 raise ValueError("Time string is invalid");
         self.interval = self.interval_t(seconds,minutes,hours,days)
 
-
+start = input()
+end = input()
 interface = data_interface()
-interface.get_interval("10s90m42h")
-print("10s90m42h")
-print(interface.interval.to_string())
+interface.add_time_frame(start,end)
+print(f"START: {interface.start_time}")
+print(f"END: {interface.end_time}")

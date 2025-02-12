@@ -80,3 +80,15 @@ no I cant do that, ill dump them all into one csv using a thread, then go throug
 I really wish I knew a better algorithm or had more time
 no I can't do the previous one, I will just walk through the files
 O(n) :(
+
+03:06
+I have a mock solution
+we shall see
+I will give myself 40 minutes max to complete this
+
+03:38
+ok I lost
+sucks
+
+04:05
+nvm I did it

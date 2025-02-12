@@ -15,6 +15,18 @@ class data_backend:
     def __init__(self):
         pass
 
+    def create_OHLCV_file(self, directory, start_time, end_time, interval, output_file):
+        file_names = self.find_files(directory, start_time,end_time)
+        try:
+            self.clean_data(directory,file_names)
+        except:
+            pass
+        OHLCV_results = self.collect_data(directory, file_names, start_time, end_time, interval)
+        
+        file = open(output_file, "w")
+        writer = csv.writer(file)
+        writer.writerows(OHLCV_results)
+
     # Data cleaning pipeline
     # What does it mean for the data to be clean?
     # I have discovered 4 discrepencies and I will now explain them to you
@@ -33,20 +45,11 @@ class data_backend:
     #   I wll assume that trades outside of regular hours are outliers and should not be counted
     # I will attempt to use threads to format data, I will use git to store my state before I test
     def clean_data(self, directory, file_names):
-        # I don't know how to handle the error of two many i/o being open
-        # so I had to gut the data cleaner
         threads = [threading.Thread(target=self.clean_data_helper, args=(directory,file_name)) for file_name in file_names]
-        for file_name in file_names:
-            self.clean_data_helper(directory, file_name)
-        #for i in range(len(threads), 50):
-        #    for g in range(50):
-        #        threads[i+g].start()
-        #    for g in range(50):
-        #        threads[i+g].join()
-        #for thread in threads:
-        #    thread.start()
-        #for thread in threads:
-        #    thread.join()
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
         #print("done")
 
     # helper method which will be used by the threads

@@ -57,7 +57,12 @@ class data_backend:
 
             spamreader = csv.reader(csvfile, delimiter=',')
             # skip header
-            valid_lines.append(next(spamreader))
+            first_row = next(spamreader, None)
+            #handle empty files
+            if first_row == None:
+                csvfile.close()
+                return
+            valid_lines.append(first_row)
             #loop through rows
             for row in spamreader:
                 # checks condition 2

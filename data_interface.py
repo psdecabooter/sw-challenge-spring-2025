@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+import copy
 #- **Functionality Requirements**:
 #    - **Time Interval Input**:
 #        - Accept time intervals as strings (e.g., “4s”, "15m", "2h", "1d", "1h30m").
@@ -27,26 +28,8 @@ class data_interface:
     start_time = None
     end_time = None
 
-    # interval_t ovbject holding our interval
+    # timedelta ovbject holding our interval
     interval = None
-
-    # structured data for holding the interval
-    class interval_t:
-        hour = 0
-        minute = 0
-        second = 0
-        day = 0
-        def __init__(self, second, minute, hour, day):
-            self.second = second
-            self.minute = minute
-            self.hour = hour
-            self.day = day
-
-        # used for debugging
-        def to_string(self):
-            return f"{self.second}s{self.minute}m{self.hour}h{self.day}d"
-
-
 
 
     def __init__(self):
@@ -76,6 +59,8 @@ class data_interface:
         last_found = 0
         for i in range(len(time_string)):
             char = time_string[i]
+
+            #why are there no switch statements in python?
             if char == 's':
                 seconds = int(time_string[last_found:i])
                 last_found = i+1
@@ -89,12 +74,27 @@ class data_interface:
                 days = int(time_string[last_found:i])
                 last_found = i+1
             elif not char.isnumeric():
+                # this must be handled
                 raise ValueError("Time string is invalid");
-        self.interval = self.interval_t(seconds,minutes,hours,days)
+        self.interval = timedelta(days=days, seconds=seconds, hours=hours, minutes=minutes)
 
-start = input()
-end = input()
+    def output_generation(self, file_name):
+        file = open(file_name, "w")
+        file.write("Open,High,Low,Close,Volume\n")
+
+        # we will loop until the end_time value is less than the start_time
+        # every loop we'll decrement the end_time by the interval
+        # we deep copy so the original end_time value stays intact
+        copied_end = copy.deepcopy(self.end_time)
+        while copied_end > start_time:
+
+            #final statement:
+            copied_end = copied_end - interval
+
+
+
+
+
 interface = data_interface()
-interface.add_time_frame(start,end)
-print(f"START: {interface.start_time}")
-print(f"END: {interface.end_time}")
+interface.get_interval("10d32s40m")
+print(interface.interval)

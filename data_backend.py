@@ -37,10 +37,12 @@ class data_backend:
         for i in range(len(threads), 50):
             for g in range(50):
                 threads[i+g].start()
+            for g in range(50):
+                threads[i+g].join()
         #for thread in threads:
         #    thread.start()
-        for thread in threads:
-            thread.join()
+        #for thread in threads:
+        #    thread.join()
         print("done")
 
     # helper method which will be used by the threads

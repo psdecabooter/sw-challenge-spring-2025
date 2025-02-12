@@ -45,3 +45,11 @@ Data Cleaning Pipeline:
        Is it supposed to be UTC or EST?
        Since the previous line specifies EST for trading hours, and since it is typed out that way long-form
        I wll assume that trades outside of regular hours are outliers and should not be counted
+
+Challenges to be solved:
+- What does the 8 digit hash mean on the file format?
+- How can I more efficiently analyze the intervals?
+       - Maybe construct a data structure that holds each interval and more data (start time, end time, start file, end file)
+- How can I fix the multithreading issue in the cleaning step, i.e. how do I limit the number of threads active and Identify how many can be active
+- I think the code for volume might be wrong, I would change that
+- Handle empty intervals better thatn just returning an empty line

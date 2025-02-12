@@ -113,90 +113,89 @@ class data_backend:
         OHLCV_vals.append(["timestamp, open, high, low, close, volume"])
 
         curr_time = start_time.replace()
-        while curr_time <= end_time:
             
-            csvfile = None
-            reader = None
-            valid_file = False
+        csvfile = None
+        reader = None
+        valid_file = False
 
-            # need to make sure we open a valid vile
-            while not valid_file:
-                if (curr_file >= len(file_names)):
-                    hit_end = True
-                    break
-                csvfile = open(os.path.join(directory,file_names[curr_file]), "r")
-                reader = csv.reader(csvfile, delimiter=',')
-                # skip header
-                first_row = next(reader, None)
-                #handle empty files
-                if first_row == None:
-                    csvfile.close()
-                    curr_file += 1
-                else:
-                    valid_file = True
-            if hit_end:
-                return OHLCV_vals
+        # need to make sure we open a valid vile
+        while not valid_file:
+            if (curr_file >= len(file_names)):
+                hit_end = True
+                break
+            csvfile = open(os.path.join(directory,file_names[curr_file]), "r")
+            reader = csv.reader(csvfile, delimiter=',')
+            # skip header
+            first_row = next(reader, None)
+            #handle empty files
+            if first_row == None:
+                csvfile.close()
+                curr_file += 1
+            else:
+                valid_file = True
+        if hit_end:
+            return OHLCV_vals
 
-            # only ends when we exhaust all files
-            searching = True
-            while searching:
-                next_row = next(reader, None)
-                if next_row == None:
-                    valid_file = False
+        # only ends when we exhaust all files
+        searching = True
+        while searching:
+            next_row = next(reader, None)
+            if next_row == None:
+                valid_file = False
 
-                    # need to make sure we open a valid vile
-                    while not valid_file:
-                        # check if we hit the end
-                        if (curr_file >= len(file_names)):
-                            hit_end = True
-                            break
-                        csvfile = open(os.path.join(directory,file_names[curr_file]), "r")
-                        reader = csv.reader(csvfile, delimiter=',')
-                        # skip header
-                        first_row = next(reader, None)
-                        #handle empty files
-                        if first_row == None:
-                            csvfile.close()
-                            curr_file += 1
-                        else:
-                            valid_file = True
-                    # if we hit the end, return
-                    if hit_end:
-                        return OHLCV_vals
+                # need to make sure we open a valid vile
+                while not valid_file:
+                    # check if we hit the end
+                    if (curr_file >= len(file_names)):
+                        hit_end = True
+                        break
+                    csvfile = open(os.path.join(directory,file_names[curr_file]), "r")
+                    reader = csv.reader(csvfile, delimiter=',')
+                    # skip header
+                    first_row = next(reader, None)
+                    #handle empty files
+                    if first_row == None:
+                        csvfile.close()
+                        curr_file += 1
+                    else:
+                        valid_file = True
+                # if we hit the end, return
+                if hit_end:
+                    return OHLCV_vals
                 
-                # so now we know we are in a valid file
-                # we need to check every line before we move on
-                for row in reader:
-                    # the time of the current row
-                    row_time = datetime.strptime(row[0], datetime_format)
-                    #the time of the end of the interval
-                    end_of_interval = curr_time + interval
-                    # if its less than the start we need to keep searchign
-                    if row_time < curr_time:
-                        continue
-                    # if its more than the end we need to increase the interval until its not
-                    # also serves as our termination
-                    while row_time > end_of_interval:
-                        OHLCV_vals.append(curr_OHLCV)
-                        print(curr_OHLCV)
-                        curr_OHLCV = [None,None,None,None,None]
-                        curr_time += interval
-                        end_of_interval = max(end_time,curr_time+interval)
-                        # terminates if we complete the search
-                        if curr_time > end_time:
-                            return OHLCV_vals
+            # so now we know we are in a valid file
+            # we need to check every line before we move on
+            for row in reader:
+                # the time of the current row
+                row_time = datetime.strptime(row[0], datetime_format)
+                #the time of the end of the interval
+                end_of_interval = curr_time + interval
+                # if its less than the start we need to keep searchign
+                if row_time < curr_time:
+                    continue
+                # if its more than the end we need to increase the interval until its not
+                # also serves as our termination
+                while row_time > end_of_interval:
+                    OHLCV_vals.append(curr_OHLCV)
+                    print(curr_OHLCV)
+                    curr_OHLCV = [None,None,None,None,None]
+                    curr_time += interval
+                    end_of_interval = max(end_time,curr_time+interval)
+                    # terminates if we complete the search
+                    if curr_time > end_time:
+                        return OHLCV_vals
                         
 
-                    # now if it gets here then the time is within the interval
-                    # the output looks like timestamp, open, high, low, close, volume
-                    if (curr_OHLCV[0] == None): curr_OHLCV[0] = curr_time
-                    if (curr_OHLCV[1] == None): curr_OHLCV[1] = row[1]
-                    if (curr_OHLCV[2] == None or curr_OHLCV[2] < row[1]): curr_OHLCV[2] = row[1]
-                    if (curr_OHLCV[3] == None or curr_OHLCV[3] > row[1]): curr_OHLCV[3] = row[1]
-                    if (curr_OHLCV[4] == None): 
-                        curr_OHLCV[4] = 1
-                    else:
-                        curr_OHLCV[4] += 1
+                # now if it gets here then the time is within the interval
+                # the output looks like timestamp, open, high, low, close, volume
+                if (curr_OHLCV[0] == None): curr_OHLCV[0] = curr_time
+                if (curr_OHLCV[1] == None): curr_OHLCV[1] = row[1]
+                if (curr_OHLCV[2] == None or curr_OHLCV[2] < row[1]): curr_OHLCV[2] = row[1]
+                if (curr_OHLCV[3] == None or curr_OHLCV[3] > row[1]): curr_OHLCV[3] = row[1]
+                if (curr_OHLCV[4] == None): 
+                    curr_OHLCV[4] = 1
+                else:
+                    curr_OHLCV[4] += 1
 
     # start_time and end_time are both datetime objects
     # FILE Naming FORMAT:

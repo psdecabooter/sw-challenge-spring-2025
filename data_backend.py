@@ -32,7 +32,12 @@ class data_backend:
     #   I wll assume that trades outside of regular hours are outliers and should not be counted
     # I will attempt to use threads to format data, I will use git to store my state before I test
     def clean_data(self, directory, file_names):
-        self.clean_data_helper(directory, file_names[0])
+        threads = [threading.Thread(target=clean_data_helper, args=(self,directory,file_name)) for file_name in file_names]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+        print("done")
 
     # helper method which will be used by the threads
     def clean_data_helper(self, directory, file_name):

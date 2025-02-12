@@ -33,6 +33,8 @@ class data_backend:
     #   I wll assume that trades outside of regular hours are outliers and should not be counted
     # I will attempt to use threads to format data, I will use git to store my state before I test
     def clean_data(self, directory, file_names):
+        # I don't know how to handle the error of two many i/o being open
+        # so I had to gut the data cleaner
         threads = [threading.Thread(target=self.clean_data_helper, args=(directory,file_name)) for file_name in file_names]
         for file_name in file_names:
             self.clean_data_helper(directory, file_name)
@@ -97,7 +99,7 @@ class data_backend:
     # Returns the list of lists of OHLCV_vals
     def collect_data(self, directory, file_names, start_time, end_time, interval):
         # first clean the data
-        self.clean_data(directory,file_names)
+        #self.clean_data(directory,file_names)
 
         # format for parsing datetime
         datetime_format = "%Y-%m-%d %H:%M:%S.%f"
@@ -133,6 +135,7 @@ class data_backend:
                 curr_file += 1
             else:
                 valid_file = True
+                break
         if hit_end:
             return OHLCV_vals
 
@@ -149,6 +152,7 @@ class data_backend:
                     if (curr_file >= len(file_names)):
                         hit_end = True
                         break
+                    #print(f"on file {file_names[curr_file]}")
                     csvfile = open(os.path.join(directory,file_names[curr_file]), "r")
                     reader = csv.reader(csvfile, delimiter=',')
                     # skip header
@@ -159,6 +163,7 @@ class data_backend:
                         curr_file += 1
                     else:
                         valid_file = True
+                        break
                 # if we hit the end, return
                 if hit_end:
                     return OHLCV_vals
@@ -166,6 +171,10 @@ class data_backend:
             # so now we know we are in a valid file
             # we need to check every line before we move on
             for row in reader:
+                print(file_names[0])
+                print(file_names[len(file_names)-1])
+                print(file_names[curr_file])
+                print(row)
                 # the time of the current row
                 row_time = datetime.strptime(row[0], datetime_format)
                 #the time of the end of the interval
@@ -177,7 +186,13 @@ class data_backend:
                 # also serves as our termination
                 while row_time > end_of_interval:
                     OHLCV_vals.append(curr_OHLCV)
+                    print(curr_time)
+                    print(row_time-end_of_interval)
+                    print(start_time)
+                    print(end_time)
+                    print(interval)
                     print(curr_OHLCV)
+                    return
                     curr_OHLCV = [None,None,None,None,None]
                     curr_time += interval
                     end_of_interval = max(end_time,curr_time+interval)
@@ -196,6 +211,7 @@ class data_backend:
                     curr_OHLCV[4] = 1
                 else:
                     curr_OHLCV[4] += 1
+            curr_file += 1
 
     # start_time and end_time are both datetime objects
     # FILE Naming FORMAT:
@@ -215,7 +231,7 @@ class data_backend:
         while copy_start <= copy_end:
             
             # I tested how start_time.month returns, and I figured I need to pad it
-            day_string = f"ctg_tick_{copy_end.year}{str(copy_end.month).zfill(2)}{str(copy_end.day).zfill(2)}"
+            day_string = f"ctg_tick_{copy_start.year}{str(copy_start.month).zfill(2)}{str(copy_start.day).zfill(2)}"
 
             for file_name in all_files:
                 if file_name.startswith(day_string):
@@ -231,6 +247,7 @@ class data_backend:
 backend = data_backend()
 file_names = backend.find_files("./data/", datetime(year=2024,month=9,day=16),datetime(year=2024,month=9,day=20))
 OHLCV_results = backend.collect_data("./data/", file_names, datetime(year=2024,month=9,day=16), datetime(year=2024,month=9,day=20), timedelta(days=1))
+print("done")
 for result in OHLCV_results:
     print(result)
 

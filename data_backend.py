@@ -34,8 +34,11 @@ class data_backend:
     # I will attempt to use threads to format data, I will use git to store my state before I test
     def clean_data(self, directory, file_names):
         threads = [threading.Thread(target=self.clean_data_helper, args=(directory,file_name)) for file_name in file_names]
-        for thread in threads:
-            thread.start()
+        for i in range(len(threads), 50):
+            for g in range(50):
+                threads[i+g].start()
+        #for thread in threads:
+        #    thread.start()
         for thread in threads:
             thread.join()
         print("done")

@@ -124,7 +124,7 @@ class data_backend:
                 #handle empty files
                 if first_row == None:
                     csvfile.close()
-                    curr_file++
+                    curr_file += 1
                 else:
                     valid_file = True
             if hit_end:
@@ -150,7 +150,7 @@ class data_backend:
                         #handle empty files
                         if first_row == None:
                             csvfile.close()
-                            curr_file++
+                            curr_file += 1
                         else:
                             valid_file = True
                     # if we hit the end, return

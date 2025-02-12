@@ -188,8 +188,8 @@ class data_backend:
                     # the output looks like timestamp, open, high, low, close, volume
                     if (curr_OHLCV[0] == None): curr_OHLCV[0] = curr_time
                     if (curr_OHLCV[1] == None): curr_OHLCV[1] = row[1]
-                    if (curr_OHLCV[2] == None or curr_OHLCV[2] < row[2]): curr_OHLCV[2] = row[1]
-                    if (curr_OHLCV[3] == None or curr_OHLCV[3] > row[3]): curr_OHLCV[3] = row[1]
+                    if (curr_OHLCV[2] == None or curr_OHLCV[2] < row[1]): curr_OHLCV[2] = row[1]
+                    if (curr_OHLCV[3] == None or curr_OHLCV[3] > row[1]): curr_OHLCV[3] = row[1]
                     if (curr_OHLCV[4] == None): 
                         curr_OHLCV[4] = 1
                     else:

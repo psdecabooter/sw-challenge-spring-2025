@@ -66,3 +66,17 @@ so I am reading the files well
 
 01:49
 I need to use a time type, im at 3 hours. Need to speed up
+
+02:10
+I forgot to check for empty files
+
+02:15
+I fixed empty files
+now I have all my cleaning working, time for logic
+
+02:20
+ill probably just give a thread to each interval, and then generate it's data
+no I cant do that, ill dump them all into one csv using a thread, then go through
+I really wish I knew a better algorithm or had more time
+no I can't do the previous one, I will just walk through the files
+O(n) :(

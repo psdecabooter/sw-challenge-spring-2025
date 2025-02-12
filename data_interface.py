@@ -80,7 +80,7 @@ class data_interface:
 
     def output_generation(self, file_name):
         file = open(file_name, "w")
-        file.write("Open,High,Low,Close,Volume\n")
+        file.write("timestamp, open, high, low, close, volume\n")
 
         # we will loop until the end_time value is less than the start_time
         # every loop we'll decrement the end_time by the interval

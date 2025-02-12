@@ -34,16 +34,18 @@ class data_backend:
     # I will attempt to use threads to format data, I will use git to store my state before I test
     def clean_data(self, directory, file_names):
         threads = [threading.Thread(target=self.clean_data_helper, args=(directory,file_name)) for file_name in file_names]
-        for i in range(len(threads), 50):
-            for g in range(50):
-                threads[i+g].start()
-            for g in range(50):
-                threads[i+g].join()
+        for file_name in file_names:
+            clean_data_helper(directory, file_name)
+        #for i in range(len(threads), 50):
+        #    for g in range(50):
+        #        threads[i+g].start()
+        #    for g in range(50):
+        #        threads[i+g].join()
         #for thread in threads:
         #    thread.start()
         #for thread in threads:
         #    thread.join()
-        print("done")
+        #print("done")
 
     # helper method which will be used by the threads
     def clean_data_helper(self, directory, file_name):
@@ -176,6 +178,7 @@ class data_backend:
                     # also serves as our termination
                     while row_time > end_of_interval:
                         OHLCV_vals.append(curr_OHLCV)
+                        print(curr_OHLCV)
                         curr_OHLCV = [None,None,None,None,None]
                         curr_time += interval
                         end_of_interval = max(end_time,curr_time+interval)

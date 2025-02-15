@@ -1,5 +1,5 @@
 If you want to see my time-stampped trail of though, look at plan.md
-
+<br>
 In order to use my solution, you must run the frontend file with python3.
 There are 3 parts:
 1. frontend - communicates with use
@@ -28,7 +28,7 @@ Formatting:
 - Format your interval input as '4s', '15m', '2h', '1d', '1h30m'
 - Format your datetimes as YYYY-MM-DD HH:MM:SS.xxx (remember the thousandths of a second)
 - Finally the path name of your output file
-
+<br>
 Data Cleaning Pipeline:
      What does it mean for the data to be clean?
      I have discovered 4 discrepencies and I will now explain them to you
@@ -45,7 +45,7 @@ Data Cleaning Pipeline:
        Is it supposed to be UTC or EST?
        Since the previous line specifies EST for trading hours, and since it is typed out that way long-form
        I wll assume that trades outside of regular hours are outliers and should not be counted
-
+<br>
 Challenges to be solved:
 - What does the 8 digit hash mean on the file format?
 - How can I more efficiently analyze the intervals?
@@ -53,3 +53,11 @@ Challenges to be solved:
 - How can I fix the multithreading issue in the cleaning step, i.e. how do I limit the number of threads active and Identify how many can be active
 - I think the code for volume might be wrong, I would change that
 - Handle empty intervals better thatn just returning an empty line
+<br>
+Retrospective:
+- Through more research, I have learned that this data is called time series data
+- If I were to implement the cleaning funciton again, I would create a queue with all of the file names, and then I would have 10 threads that just cycle through the queue
+     - It would be better if I hade a thread lock, but if pressed for time again I would just assign each thread to a single file, and then create new threads for each individual file when popping from the queue
+- I am still unsure of the best way to handle the OHLCV with threads
+     - The advantages of my previous solution was that it was O(n) where n is the number of lines across csvs, and that it had a relatively-low memory overhead
+     - The disadvantage was that it was not multi-threaded
